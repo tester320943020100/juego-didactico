@@ -3,104 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Actividad: Sistema Nervioso</title>
+<title>Escape Room del Sistema Nervioso</title>
 
 <style>
+
+*{
+    box-sizing: border-box;
+}
+
 body{
     font-family: Arial, sans-serif;
-    background:#eef5ff;
-    margin:0;
-    padding:20px;
-    text-align:center;
+    background: #eef5ff;
+    margin: 0;
+    padding: 15px;
+    text-align: center;
 }
 
 .container{
-    max-width:900px;
-    margin:auto;
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 0 15px rgba(0,0,0,.15);
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,.15);
 }
 
 h1{
-    color:#1f4e79;
+    color: #1f4e79;
 }
 
 .progress{
-    width:100%;
-    height:25px;
-    background:#ddd;
-    border-radius:20px;
-    overflow:hidden;
-    margin:20px 0;
+    width: 100%;
+    height: 25px;
+    background: #ddd;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px 0;
 }
 
 .progress-bar{
-    height:100%;
-    width:0%;
-    background:#4caf50;
-    transition:.5s;
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    transition: .5s;
 }
 
 .question{
-    margin:25px 0;
-    font-size:20px;
+    margin: 25px 0;
+    font-size: 22px;
 }
 
 button{
-    padding:10px 20px;
-    margin:8px;
-    cursor:pointer;
-    border:none;
-    border-radius:8px;
-    background:#1f4e79;
-    color:white;
+    width: 100%;
+    max-width: 500px;
+    padding: 14px;
+    margin: 8px auto;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: #1f4e79;
+    color: white;
+    font-size: 17px;
+    display: block;
 }
 
 button:hover{
-    opacity:.9;
-}
-
-.hidden{
-    display:none;
+    opacity: .9;
 }
 
 .info{
-    background:#dff0ff;
-    padding:15px;
-    border-radius:10px;
-    margin-top:15px;
+    background: #dff0ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: left;
 }
 
 .dropzone{
-    border:2px dashed #888;
-    padding:15px;
-    margin:10px;
-    min-height:60px;
-    border-radius:10px;
-    background:#fafafa;
-}
-
-.draggable{
-    background:#4caf50;
-    color:white;
-    padding:10px;
-    margin:8px;
-    border-radius:8px;
-    cursor:grab;
+    border: 2px dashed #777;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 10px;
+    background: #fafafa;
+    cursor: pointer;
+    text-align: left;
 }
 
 .correct{
-    background:#c8f7c5;
+    background: #c8f7c5;
+}
+
+.selected{
+    background: #4caf50 !important;
 }
 
 #certificate{
-    background:#fff8d5;
-    border:3px solid gold;
-    padding:20px;
-    border-radius:15px;
+    background: #fff8d5;
+    border: 3px solid gold;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: left;
 }
+
+ul{
+    text-align: left;
+}
+
+@media(max-width:600px){
+
+    .container{
+        padding: 15px;
+    }
+
+    h1{
+        font-size: 28px;
+    }
+
+    .question{
+        font-size: 19px;
+    }
+
+}
+
 </style>
 </head>
 <body>
@@ -110,11 +134,11 @@ button:hover{
 <h1>🧠 Escape Room del Sistema Nervioso</h1>
 
 <p>
-Supera los 3 niveles para convertirte en un experto en células nerviosas.
+Supera todos los desafíos para convertirte en un experto en células nerviosas.
 </p>
 
 <div class="progress">
-<div class="progress-bar" id="bar"></div>
+    <div class="progress-bar" id="bar"></div>
 </div>
 
 <h3>Puntaje: <span id="score">0</span></h3>
@@ -127,37 +151,38 @@ Supera los 3 niveles para convertirte en un experto en células nerviosas.
 
 let score = 0;
 let level = 0;
+let selectedCell = null;
 
 const game = document.getElementById("game");
 
 const levels = [
 
 {
-question:"¿Cuál es la función principal de la neurona?",
+question:"¿Cuál es la función principal de una neurona?",
 options:[
-"Producir mielina",
+"Defender el sistema nervioso",
 "Transmitir impulsos nerviosos",
-"Defender el tejido nervioso",
-"Producir líquido cefalorraquídeo"
+"Producir mielina",
+"Nutrir otras células"
 ],
 correct:1,
-info:"<h3>✅ Neurona</h3><p>Su función principal es transmitir información mediante impulsos nerviosos.</p>"
+info:"<h3>✅ Neurona</h3><p>Su función principal es recibir, procesar y transmitir impulsos nerviosos.</p>"
 },
 
 {
 question:"¿Qué parte de la neurona recibe señales de otras células?",
 options:[
 "Axón",
-"Soma",
 "Dendritas",
-"Mielina"
+"Mielina",
+"Núcleo"
 ],
-correct:2,
-info:"<h3>✅ Dendritas</h3><p>Las dendritas reciben señales y las conducen hacia el soma.</p>"
+correct:1,
+info:"<h3>✅ Dendritas</h3><p>Las dendritas reciben información y la conducen hacia el soma.</p>"
 },
 
 {
-question:"¿Qué parte de la neurona envía los impulsos nerviosos?",
+question:"¿Qué parte de la neurona envía el impulso nervioso hacia otras células?",
 options:[
 "Axón",
 "Dendritas",
@@ -169,15 +194,27 @@ info:"<h3>✅ Axón</h3><p>El axón conduce el impulso nervioso hacia otras cél
 },
 
 {
-question:"¿Qué tipo de neurona lleva información desde los receptores al sistema nervioso central?",
+question:"¿Cómo se llama el cuerpo celular de la neurona?",
+options:[
+"Soma",
+"Axón",
+"Dendrita",
+"Mielina"
+],
+correct:0,
+info:"<h3>✅ Soma</h3><p>El soma contiene el núcleo y coordina las funciones celulares.</p>"
+},
+
+{
+question:"¿Qué tipo de neurona lleva información desde los receptores sensoriales al SNC?",
 options:[
 "Motora",
 "Interneurona",
 "Sensorial o sensitiva",
-"Multipolar"
+"Bipolar"
 ],
 correct:2,
-info:"<h3>✅ Neurona sensitiva</h3><p>Transporta información desde los receptores hacia el SNC.</p>"
+info:"<h3>✅ Neurona sensitiva</h3><p>Lleva información desde los órganos sensoriales al Sistema Nervioso Central.</p>"
 },
 
 {
@@ -185,87 +222,87 @@ question:"¿Qué tipo de neurona lleva órdenes desde el SNC hacia músculos o g
 options:[
 "Motora",
 "Interneurona",
-"Unipolar",
-"Sensorial"
+"Sensorial",
+"Multipolar"
 ],
 correct:0,
-info:"<h3>✅ Neurona motora</h3><p>Conduce respuestas hacia músculos y glándulas.</p>"
+info:"<h3>✅ Neurona motora</h3><p>Transporta respuestas desde el SNC hacia músculos y glándulas.</p>"
 },
 
 {
 question:"¿Qué neurona conecta otras neuronas dentro del SNC?",
 options:[
 "Motora",
-"Sensorial",
 "Interneurona",
-"Bipolar"
+"Sensorial",
+"Unipolar"
 ],
-correct:2,
-info:"<h3>✅ Interneurona</h3><p>Conecta neuronas entre sí dentro del SNC.</p>"
+correct:1,
+info:"<h3>✅ Interneurona</h3><p>Conecta neuronas entre sí dentro del Sistema Nervioso Central.</p>"
 },
 
 {
-question:"¿Cuál es el tipo estructural más común de neurona?",
+question:"¿Cuál es el tipo estructural de neurona más abundante?",
 options:[
-"Unipolar",
-"Bipolar",
 "Multipolar",
-"Pseudopolar"
-],
-correct:2,
-info:"<h3>✅ Multipolar</h3><p>Es la neurona más abundante en el sistema nervioso.</p>"
-},
-
-{
-question:"¿Cuál es la función principal de los astrocitos?",
-options:[
-"Transmitir impulsos",
-"Defensa inmunitaria",
-"Soporte y nutrición neuronal",
-"Producción de mielina"
-],
-correct:2,
-info:"<h3>✅ Astrocitos</h3><p>Brindan soporte, nutrición y ayudan a mantener el entorno neuronal.</p>"
-},
-
-{
-question:"¿Con qué estructura se relacionan los astrocitos?",
-options:[
-"Barrera hematoencefálica",
-"Nodo de Ranvier",
-"Axón",
-"Ventrículos"
+"Bipolar",
+"Unipolar",
+"Ninguna"
 ],
 correct:0,
-info:"<h3>✅ Barrera hematoencefálica</h3><p>Los astrocitos participan en su mantenimiento.</p>"
+info:"<h3>✅ Multipolar</h3><p>Las neuronas multipolares son las más abundantes del sistema nervioso.</p>"
 },
 
 {
-question:"¿Qué célula forma mielina en el sistema nervioso central?",
-options:[
-"Schwann",
-"Astrocito",
-"Oligodendrocito",
-"Microglía"
-],
-correct:2,
-info:"<h3>✅ Oligodendrocito</h3><p>Produce la vaina de mielina en el SNC.</p>"
-},
-
-{
-question:"¿Qué célula forma mielina en el sistema nervioso periférico?",
+question:"¿Qué célula glial brinda soporte y nutrición a las neuronas?",
 options:[
 "Microglía",
-"Neurona",
+"Astrocito",
 "Schwann",
 "Ependimaria"
 ],
-correct:2,
-info:"<h3>✅ Célula de Schwann</h3><p>Produce mielina en el SNP.</p>"
+correct:1,
+info:"<h3>✅ Astrocito</h3><p>Proporciona soporte estructural y nutrición a las neuronas.</p>"
 },
 
 {
-question:"¿Cuál es la principal función de la microglía?",
+question:"¿Qué célula participa en la barrera hematoencefálica?",
+options:[
+"Astrocito",
+"Schwann",
+"Microglía",
+"Oligodendrocito"
+],
+correct:0,
+info:"<h3>✅ Astrocito</h3><p>Participa en la barrera hematoencefálica regulando el intercambio entre sangre y tejido nervioso.</p>"
+},
+
+{
+question:"¿Qué célula forma la mielina en el Sistema Nervioso Central (SNC)?",
+options:[
+"Schwann",
+"Microglía",
+"Oligodendrocito",
+"Astrocito"
+],
+correct:2,
+info:"<h3>✅ Oligodendrocito</h3><p>Forma la vaina de mielina en el Sistema Nervioso Central.</p>"
+},
+
+{
+question:"¿Qué célula forma la mielina en el Sistema Nervioso Periférico (SNP)?",
+options:[
+"Astrocito",
+"Microglía",
+"Oligodendrocito",
+"Célula de Schwann"
+],
+correct:3,
+info:"<h3>✅ Célula de Schwann</h3><p>Produce la mielina en el Sistema Nervioso Periférico.</p>"
+},
+
+{
+question:"¿Cuál es la función principal de la microglía?",
 options:[
 "Nutrir neuronas",
 "Defensa inmunitaria",
@@ -273,274 +310,253 @@ options:[
 "Formar mielina"
 ],
 correct:1,
-info:"<h3>✅ Microglía</h3><p>Es la célula defensiva del tejido nervioso.</p>"
+info:"<h3>✅ Microglía</h3><p>Actúa como el sistema de defensa del tejido nervioso.</p>"
 },
 
 {
-question:"¿Qué proceso realiza la microglía para eliminar desechos?",
+question:"¿Qué células recubren los ventrículos cerebrales?",
 options:[
-"Mitosis",
-"Fotosíntesis",
-"Fagocitosis",
-"Ósmosis"
+"Microglía",
+"Schwann",
+"Ependimarias",
+"Astrocitos"
 ],
 correct:2,
-info:"<h3>✅ Fagocitosis</h3><p>La microglía elimina microorganismos y restos celulares.</p>"
+info:"<h3>✅ Células ependimarias</h3><p>Recubren los ventrículos cerebrales y el canal central de la médula espinal.</p>"
 },
 
 {
-question:"¿Dónde se encuentran las células ependimarias?",
-options:[
-"En los músculos",
-"En los ventrículos cerebrales",
-"En la piel",
-"En los pulmones"
-],
-correct:1,
-info:"<h3>✅ Ependimarias</h3><p>Recubren los ventrículos cerebrales y el conducto central de la médula espinal.</p>"
-},
-
-{
-question:"¿Con qué líquido se relacionan las células ependimarias?",
+question:"¿Con qué líquido están relacionadas las células ependimarias?",
 options:[
 "Sangre",
-"Linfa",
+"Líquido sinovial",
 "Líquido cefalorraquídeo",
-"Plasma"
+"Linfa"
 ],
 correct:2,
-info:"<h3>✅ Líquido cefalorraquídeo</h3><p>Participan en su producción y circulación.</p>"
+info:"<h3>✅ Líquido cefalorraquídeo</h3><p>Las células ependimarias participan en su producción y circulación.</p>"
 }
 
 ];
 
 function updateProgress(){
-let percent = (level/(levels.length+1))*100;
-document.getElementById("bar").style.width = percent+"%";
+    let percent = (level / (levels.length + 1)) * 100;
+    document.getElementById("bar").style.width = percent + "%";
 }
 
 function loadQuestion(){
 
-updateProgress();
+    updateProgress();
 
-let q = levels[level];
+    let q = levels[level];
 
-game.innerHTML = `
-<div class="question">${q.question}</div>
-${q.options.map((op,i)=>
-`<button onclick="answer(${i})">${op}</button>`
-).join("")}
-`;
+    game.innerHTML = `
+        <div class="question">${q.question}</div>
+
+        ${q.options.map((op,i)=>
+            `<button onclick="answer(${i})">${op}</button>`
+        ).join("")}
+    `;
 }
 
 window.answer = function(index){
 
-const q = levels[level];
+    let q = levels[level];
 
-if(index === q.correct){
-score++;
-document.getElementById("score").textContent = score;
-}
+    let correcta = index === q.correct;
 
-game.innerHTML = `
-<div class="info">
-${q.info}
-<br><br>
-<button onclick="nextLevel()">Continuar</button>
-</div>
-`;
+    if(correcta){
+        score++;
+        document.getElementById("score").textContent = score;
+    }
+
+    game.innerHTML = `
+        <div class="info">
+
+            <h2 style="text-align:center;">
+                ${correcta ? "✅ ¡Correcto!" : "❌ Incorrecto"}
+            </h2>
+
+            ${
+                !correcta
+                ? `<p><strong>La respuesta correcta era:</strong> ${q.options[q.correct]}</p>`
+                : ""
+            }
+
+            ${q.info}
+
+            <br><br>
+
+            <button onclick="nextLevel()">
+                Continuar
+            </button>
+
+        </div>
+    `;
 }
 
 window.nextLevel = function(){
 
-level++;
+    level++;
 
-if(level < levels.length){
-loadQuestion();
-}
-else{
-loadDragGame();
-}
-
-}
-
-function loadDragGame(){
-
-updateProgress();
-
-game.innerHTML = `
-<h2>🎯 Nivel Final: Relaciona cada célula con su función</h2>
-
-<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px">
-
-<div>
-<div draggable="true" class="draggable" id="neurona">Neurona</div>
-<div draggable="true" class="draggable" id="astrocito">Astrocito</div>
-<div draggable="true" class="draggable" id="oligo">Oligodendrocito</div>
-<div draggable="true" class="draggable" id="micro">Microglía</div>
-<div draggable="true" class="draggable" id="schwann">Schwann</div>
-<div draggable="true" class="draggable" id="epend">Ependimaria</div>
-</div>
-
-<div>
-<div class="dropzone" data-answer="neurona">
-Transmite impulsos nerviosos
-</div>
-
-<div class="dropzone" data-answer="astrocito">
-Soporte y nutrición neuronal
-</div>
-
-<div class="dropzone" data-answer="oligo">
-Mielina en SNC
-</div>
-
-<div class="dropzone" data-answer="micro">
-Defensa inmunitaria
-</div>
-
-<div class="dropzone" data-answer="schwann">
-Mielina en SNP
-</div>
-
-<div class="dropzone" data-answer="epend">
-Circulación del líquido cefalorraquídeo
-</div>
-</div>
-
-</div>
-
-<br>
-<button onclick="checkDrag()">Comprobar</button>
-`;
-
-enableDrag();
-}
-
-function enableDrag(){
-
-let dragged = null;
-
-document.querySelectorAll(".draggable").forEach(item=>{
-
-item.addEventListener("dragstart",()=>{
-dragged = item;
-});
-
-});
-
-document.querySelectorAll(".dropzone").forEach(zone=>{
-
-zone.addEventListener("dragover",(e)=>{
-e.preventDefault();
-});
-
-zone.addEventListener("drop",(e)=>{
-e.preventDefault();
-
-if(zone.children.length===0){
-zone.appendChild(dragged);
-}
-});
-
-});
-
-}
-
-window.checkDrag = function(){
-
-let correct = 0;
-
-let feedback = `
-<h3>📚 Retroalimentación del Desafío Final</h3>
-<ul style="text-align:left">
-`;
-
-document.querySelectorAll(".dropzone").forEach(zone => {
-
-    let correcta = (
-        zone.children.length > 0 &&
-        zone.children[0].id === zone.dataset.answer
-    );
-
-    if(correcta){
-        correct++;
-        zone.classList.add("correct");
+    if(level < levels.length){
+        loadQuestion();
+    }else{
+        loadFinalGame();
     }
 
-});
-
-feedback += `
-<li><b>Neurona:</b> transmite impulsos nerviosos mediante dendritas, soma y axón.</li>
-
-<li><b>Astrocito:</b> proporciona soporte estructural, nutrición y participa en la barrera hematoencefálica.</li>
-
-<li><b>Oligodendrocito:</b> produce la vaina de mielina en el Sistema Nervioso Central (SNC).</li>
-
-<li><b>Microglía:</b> actúa como defensa inmunitaria eliminando microorganismos y desechos celulares.</li>
-
-<li><b>Célula de Schwann:</b> forma la vaina de mielina en el Sistema Nervioso Periférico (SNP).</li>
-
-<li><b>Célula ependimaria:</b> recubre los ventrículos cerebrales y participa en la producción y circulación del líquido cefalorraquídeo.</li>
-`;
-
-feedback += `</ul>`;
-
-score += correct;
-
-document.getElementById("score").textContent = score;
-
-game.innerHTML = `
-<h2>🎯 Resultado del Desafío Final</h2>
-
-<p>
-Obtuviste <b>${correct}/6</b> relaciones correctas.
-</p>
-
-${feedback}
-
-<br>
-
-<button onclick="showCertificate()">
-Finalizar Actividad
-</button>
-`;
-
 }
 
-function showCertificate(){
+function loadFinalGame(){
 
-updateProgress();
-document.getElementById("bar").style.width = "100%";
+    updateProgress();
 
-game.innerHTML = `
-<div id="certificate">
+    game.innerHTML = `
 
-<h2>🏆 CERTIFICADO DE EXPERTO EN CÉLULAS NERVIOSAS</h2>
+    <h2>🎯 Nivel Final</h2>
 
-<p><strong>Puntaje final:</strong> ${score} puntos</p>
+    <p><b>Instrucciones:</b> Presiona una célula y luego toca la función correspondiente.</p>
 
-<hr>
+    <h3>Células</h3>
 
-<h3>Resumen del contenido aprendido</h3>
+    <button class="cellBtn" onclick="selectCell('neurona', this)">Neurona</button>
+    <button class="cellBtn" onclick="selectCell('astrocito', this)">Astrocito</button>
+    <button class="cellBtn" onclick="selectCell('oligo', this)">Oligodendrocito</button>
+    <button class="cellBtn" onclick="selectCell('micro', this)">Microglía</button>
+    <button class="cellBtn" onclick="selectCell('schwann', this)">Célula de Schwann</button>
+    <button class="cellBtn" onclick="selectCell('epend', this)">Célula ependimaria</button>
 
-<ul style="text-align:left">
-<li><b>Neurona:</b> transmite impulsos nerviosos.</li>
-<li><b>Astrocito:</b> soporte y nutrición.</li>
-<li><b>Oligodendrocito:</b> mielina en SNC.</li>
-<li><b>Célula de Schwann:</b> mielina en SNP.</li>
-<li><b>Microglía:</b> defensa inmunitaria.</li>
-<li><b>Células ependimarias:</b> participan en la circulación del líquido cefalorraquídeo.</li>
-<li><b>Clasificación funcional de neuronas:</b> sensitivas, motoras e interneuronas.</li>
-<li><b>Clasificación estructural:</b> unipolares, bipolares y multipolares.</li>
-</ul>
+    <h3>Funciones</h3>
 
-<hr>
+    <div class="dropzone" onclick="assign(this)" data-answer="neurona">
+    Transmite impulsos nerviosos
+    </div>
 
-<h2>¡Gracias Por Jugar!</h2>
+    <div class="dropzone" onclick="assign(this)" data-answer="astrocito">
+    Soporte y nutrición neuronal
+    </div>
 
-</div>
-`;
+    <div class="dropzone" onclick="assign(this)" data-answer="oligo">
+    Produce mielina en el SNC
+    </div>
+
+    <div class="dropzone" onclick="assign(this)" data-answer="micro">
+    Defensa inmunitaria del tejido nervioso
+    </div>
+
+    <div class="dropzone" onclick="assign(this)" data-answer="schwann">
+    Produce mielina en el SNP
+    </div>
+
+    <div class="dropzone" onclick="assign(this)" data-answer="epend">
+    Produce y moviliza líquido cefalorraquídeo
+    </div>
+
+    <br>
+    <button onclick="checkFinal()">Comprobar respuestas</button>
+    `;
+}
+
+window.selectCell = function(id, btn){
+
+    selectedCell = id;
+
+    document.querySelectorAll(".cellBtn").forEach(b=>{
+        b.classList.remove("selected");
+    });
+
+    btn.classList.add("selected");
+}
+
+window.assign = function(zone){
+
+    if(!selectedCell) return;
+
+    zone.innerHTML = zone.innerHTML.split("<br>")[0];
+    zone.innerHTML += `<br><strong>➡ ${selectedCell}</strong>`;
+    zone.dataset.selected = selectedCell;
+}
+
+window.checkFinal = function(){
+
+    let correct = 0;
+
+    document.querySelectorAll(".dropzone").forEach(zone => {
+
+        if(zone.dataset.selected === zone.dataset.answer){
+            correct++;
+            zone.classList.add("correct");
+        }
+
+    });
+
+    score += correct;
+    document.getElementById("score").textContent = score;
+
+    game.innerHTML = `
+
+    <h2>🎯 Resultado del Nivel Final</h2>
+
+    <p>Obtuviste <strong>${correct}/6</strong> respuestas correctas.</p>
+
+    <div class="info">
+
+    <h3>📚 Retroalimentación</h3>
+
+    <ul>
+        <li><b>Neurona:</b> transmite impulsos nerviosos mediante dendritas, soma y axón.</li>
+
+        <li><b>Astrocito:</b> proporciona soporte, nutrición y participa en la barrera hematoencefálica.</li>
+
+        <li><b>Oligodendrocito:</b> produce la mielina en el Sistema Nervioso Central (SNC).</li>
+
+        <li><b>Microglía:</b> actúa como defensa inmunitaria eliminando desechos y microorganismos.</li>
+
+        <li><b>Célula de Schwann:</b> forma la mielina en el Sistema Nervioso Periférico (SNP).</li>
+
+        <li><b>Célula ependimaria:</b> recubre ventrículos cerebrales y participa en la producción y circulación del líquido cefalorraquídeo.</li>
+    </ul>
+
+    </div>
+
+    <button onclick="showCertificate()">Ver certificado</button>
+    `;
+}
+
+window.showCertificate = function(){
+
+    document.getElementById("bar").style.width = "100%";
+
+    game.innerHTML = `
+
+    <div id="certificate">
+
+        <h2>🏆 CERTIFICADO DE CONOCIMIENTO DEL SISTEMA NERVIOSO</h2>
+
+        <p><strong>Puntaje final:</strong> ${score} puntos</p>
+
+        <hr>
+
+        <h3>Contenido evaluado</h3>
+
+        <ul>
+            <li>Neurona: estructura y función.</li>
+            <li>Dendritas, soma y axón.</li>
+            <li>Clasificación funcional: sensitivas, motoras e interneuronas.</li>
+            <li>Clasificación estructural: unipolares, bipolares y multipolares.</li>
+            <li>Astrocitos.</li>
+            <li>Oligodendrocitos.</li>
+            <li>Microglía.</li>
+            <li>Células de Schwann.</li>
+            <li>Células ependimarias.</li>
+            <li>Mielina en SNC y SNP.</li>
+            <li>Líquido cefalorraquídeo.</li>
+        </ul>
+
+        <h2>🧠 ¡Misión completada!</h2>
+
+    </div>
+    `;
 }
 
 loadQuestion();
