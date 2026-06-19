@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -199,6 +198,9 @@ function updateProgress(){
 
     results.forEach((r,i)=>{
 
+        // El último segmento se controla manualmente
+        if(i === levels.length) return;
+
         let seg = document.getElementById(`seg${i}`);
 
         seg.classList.remove("correct","wrong");
@@ -349,8 +351,21 @@ if(z.dataset.selected === z.dataset.answer){
 score += correct;
 document.getElementById("score").textContent = score;
 
-results[levels.length] = true;
-updateProgress();
+// Color dinámico del último segmento según aciertos
+
+const finalSegment = document.getElementById(`seg${levels.length}`);
+
+// porcentaje de aciertos (0 a 1)
+let ratio = correct / 6;
+
+// Generar un color HSL:
+// 0 grados = rojo
+// 60 grados = amarillo
+// 120 grados = verde
+let hue = ratio * 120;
+
+finalSegment.style.backgroundColor = `hsl(${hue}, 85%, 50%)`;
+
 
 showCertificate();
 }
@@ -386,4 +401,3 @@ loadQuestion();
 
 </body>
 </html>
-```
