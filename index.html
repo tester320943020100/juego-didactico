@@ -33,19 +33,25 @@ h1{
 }
 
 .progress{
-    width: 100%;
-    height: 25px;
-    background: #ddd;
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 20px 0;
+    display:flex;
+    gap:5px;
+    margin:20px 0;
 }
 
-.progress-bar{
-    height: 100%;
-    width: 0%;
-    background: #4caf50;
-    transition: .5s;
+.segment{
+    flex:1;
+    height:25px;
+    background:#ddd;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.segment.correct{
+    background:#4caf50;
+}
+
+.segment.wrong{
+    background:#f44336;
 }
 
 .question{
@@ -138,7 +144,7 @@ Supera todos los desafíos para convertirte en un experto en células nerviosas.
 </p>
 
 <div class="progress">
-    <div class="progress-bar" id="bar"></div>
+    <div class="progress" id="progressBar"></div>
 </div>
 
 <h3>Puntaje: <span id="score">0</span></h3>
@@ -152,6 +158,7 @@ Supera todos los desafíos para convertirte en un experto en células nerviosas.
 let score = 0;
 let level = 0;
 let selectedCell = null;
+let results = [];
 
 const game = document.getElementById("game");
 
@@ -339,9 +346,38 @@ info:"<h3>✅ Líquido cefalorraquídeo</h3><p>Las células ependimarias partici
 
 ];
 
+function createProgressBar(){
+
+    const container = document.getElementById("progressBar");
+
+    container.innerHTML = "";
+
+    for(let i=0;i<levels.length + 1;i++){
+
+        container.innerHTML += `
+            <div class="segment" id="seg${i}"></div>
+        `;
+
+    }
+
+}
+
 function updateProgress(){
-    let percent = (level / (levels.length + 1)) * 100;
-    document.getElementById("bar").style.width = percent + "%";
+
+    results.forEach((result,index)=>{
+
+        let segment = document.getElementById(`seg${index}`);
+
+        if(result === true){
+            segment.classList.add("correct");
+        }
+
+        if(result === false){
+            segment.classList.add("wrong");
+        }
+
+    });
+
 }
 
 function loadQuestion(){
@@ -364,6 +400,10 @@ window.answer = function(index){
     let q = levels[level];
 
     let correcta = index === q.correct;
+
+    results[level] = correcta;
+
+    updateProgress();
 
     if(correcta){
         score++;
@@ -394,7 +434,6 @@ window.answer = function(index){
         </div>
     `;
 }
-
 window.nextLevel = function(){
 
     level++;
@@ -479,6 +518,9 @@ window.assign = function(zone){
 
 window.checkFinal = function(){
 
+    results[levels.length] = true;
+    updateProgress();
+
     let correct = 0;
 
     document.querySelectorAll(".dropzone").forEach(zone => {
@@ -559,6 +601,7 @@ window.showCertificate = function(){
     `;
 }
 
+createProgressBar();
 loadQuestion();
 
 </script>
