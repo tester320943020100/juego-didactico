@@ -220,12 +220,15 @@ function loadQuestion(){
 
     let q = levels[level];
 
-    game.innerHTML = `
+    let imgHTML = "";
 
-        <div class="question">${q.question}</div>
+    // Solo agrega imagen si existe
+    if(q.image){
 
+        imgHTML = `
         <img src="${q.image}"
-             alt="Imagen de la célula"
+             alt="Imagen"
+             onerror="this.style.display='none'"
              style="
                 width:100%;
                 max-width:300px;
@@ -234,6 +237,13 @@ function loadQuestion(){
                 display:block;
                 box-shadow:0 0 10px rgba(0,0,0,.2);
              ">
+        `;
+    }
+
+    game.innerHTML = `
+        <div class="question">${q.question}</div>
+
+        ${imgHTML}
 
         ${q.options.map((op,i)=>
             `<button onclick="answer(${i})">${op}</button>`
@@ -326,7 +336,7 @@ Produce mielina en el SNP
 Líquido cefalorraquídeo
 </div>
 
-<button onclick="checkFinal()">Comprobar</button>
+<button onclick="checkFinal()">Comprobar respuestas</button>
 `;
 }
 
@@ -350,6 +360,61 @@ zone.innerHTML += `<br><b>➡ ${selectedCell}</b>`;
 zone.dataset.selected = selectedCell;
 
 }
+
+/*
+window.checkFinal = function(){
+
+let correct = 0;
+
+// evaluar respuestas
+document.querySelectorAll(".dropzone").forEach(z => {
+
+    if(z.dataset.selected === z.dataset.answer){
+        correct++;
+        z.classList.add("correctZone");
+    }
+
+});
+
+// sumar puntaje
+score += correct;
+document.getElementById("score").textContent = score;
+
+// actualizar barra
+results[levels.length] = true;
+updateProgress();
+
+// 🔥 MOSTRAR RETROALIMENTACIÓN PRIMERO
+game.innerHTML = `
+
+<h2>🎯 Revisión del Nivel Final</h2>
+
+<p><b>Resultado:</b> ${correct}/6 relaciones correctas</p>
+
+<div class="info">
+
+<h3>📚 Respuestas correctas</h3>
+
+<ul>
+<li><b>Neurona:</b> transmite impulsos nerviosos.</li>
+<li><b>Astrocito:</b> soporte y nutrición neuronal.</li>
+<li><b>Oligodendrocito:</b> mielina en el SNC.</li>
+<li><b>Microglía:</b> defensa inmunitaria.</li>
+<li><b>Célula de Schwann:</b> mielina en el SNP.</li>
+<li><b>Ependimaria:</b> líquido cefalorraquídeo.</li>
+</ul>
+
+</div>
+
+<br>
+
+<button onclick="showCertificate()">
+🏆 Ver certificado
+</button>
+
+`;
+}
+*/
 
 window.checkFinal = function(){
 
@@ -383,33 +448,86 @@ let hue = ratio * 120;
 finalSegment.style.backgroundColor = `hsl(${hue}, 85%, 50%)`;
 
 
-showCertificate();
+// 🔥 MOSTRAR RETROALIMENTACIÓN PRIMERO
+game.innerHTML = `
+
+<h2>🎯 Revisión del Nivel Final</h2>
+
+<p><b>Resultado:</b> ${correct}/6 relaciones correctas</p>
+
+<div class="info">
+
+<h3>📚 Respuestas correctas</h3>
+
+<ul>
+<li><b>Neurona:</b> transmite impulsos nerviosos.</li>
+<li><b>Astrocito:</b> soporte y nutrición neuronal.</li>
+<li><b>Oligodendrocito:</b> mielina en el SNC.</li>
+<li><b>Microglía:</b> defensa inmunitaria.</li>
+<li><b>Célula de Schwann:</b> mielina en el SNP.</li>
+<li><b>Ependimaria:</b> líquido cefalorraquídeo.</li>
+</ul>
+
+</div>
+
+<br>
+
+<button onclick="showCertificate()">
+🏆 Ver certificado
+</button>
+
+`;
 }
 
 function showCertificate(){
 
+document.getElementById("progressBar").style.width = "100%";
+
 game.innerHTML = `
+
 <div id="certificate">
 
-<h2>🏆 Certificado</h2>
+<h2>🏆 Certificado de Conocimiento del Sistema Nervioso</h2>
 
-<p><b>Puntaje final:</b> ${score}</p>
+<p><b>Puntaje final:</b> ${score} puntos</p>
 
-<h3>¡Misión completada!</h3>
+<hr>
+
+<h3>📚 Resumen de lo aprendido</h3>
+
+<p>
+Durante esta actividad aprendiste sobre las principales células del sistema nervioso y sus funciones.
+</p>
 
 <ul>
-<li>Neurona</li>
-<li>Astrocito</li>
-<li>Oligodendrocito</li>
-<li>Microglía</li>
-<li>Célula de Schwann</li>
-<li>Células ependimarias</li>
+<li><b>Neurona:</b> transmite impulsos nerviosos mediante dendritas, soma y axón.</li>
+
+<li><b>Astrocito:</b> brinda soporte estructural, nutrición y participa en la barrera hematoencefálica.</li>
+
+<li><b>Oligodendrocito:</b> forma mielina en el Sistema Nervioso Central (SNC).</li>
+
+<li><b>Célula de Schwann:</b> forma mielina en el Sistema Nervioso Periférico (SNP).</li>
+
+<li><b>Microglía:</b> actúa como defensa inmunitaria del tejido nervioso.</li>
+
+<li><b>Células ependimarias:</b> participan en la circulación del líquido cefalorraquídeo.</li>
 </ul>
 
+<h3>🧠 Conceptos clave</h3>
+
+<ul>
+<li>El sistema nervioso se divide en SNC y SNP.</li>
+<li>Las neuronas pueden ser sensitivas, motoras o interneuronas.</li>
+<li>Las neuronas también se clasifican en unipolares, bipolares y multipolares.</li>
+<li>La mielina acelera la transmisión de impulsos nerviosos.</li>
+</ul>
+
+<h2>🎉 ¡Misión completada!</h2>
+
 </div>
+
 `;
 }
-
 createProgressBar();
 loadQuestion();
 
