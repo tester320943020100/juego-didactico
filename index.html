@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escape Room del Sistema Nervioso</title>
+<title>Actividad: Sistema Nervioso</title>
 
 <style>
 body{
@@ -315,7 +315,7 @@ info:"<h3>✅ Líquido cefalorraquídeo</h3><p>Participan en su producción y ci
 ];
 
 function updateProgress(){
-let percent = (level/4)*100;
+let percent = (level/(levels.length+1))*100;
 document.getElementById("bar").style.width = percent+"%";
 }
 
@@ -451,22 +451,61 @@ window.checkDrag = function(){
 
 let correct = 0;
 
-document.querySelectorAll(".dropzone").forEach(zone=>{
+let feedback = `
+<h3>📚 Retroalimentación del Desafío Final</h3>
+<ul style="text-align:left">
+`;
 
-if(
-zone.children.length>0 &&
-zone.children[0].id===zone.dataset.answer
-){
-correct++;
-zone.classList.add("correct");
-}
+document.querySelectorAll(".dropzone").forEach(zone => {
+
+    let correcta = (
+        zone.children.length > 0 &&
+        zone.children[0].id === zone.dataset.answer
+    );
+
+    if(correcta){
+        correct++;
+        zone.classList.add("correct");
+    }
 
 });
 
+feedback += `
+<li><b>Neurona:</b> transmite impulsos nerviosos mediante dendritas, soma y axón.</li>
+
+<li><b>Astrocito:</b> proporciona soporte estructural, nutrición y participa en la barrera hematoencefálica.</li>
+
+<li><b>Oligodendrocito:</b> produce la vaina de mielina en el Sistema Nervioso Central (SNC).</li>
+
+<li><b>Microglía:</b> actúa como defensa inmunitaria eliminando microorganismos y desechos celulares.</li>
+
+<li><b>Célula de Schwann:</b> forma la vaina de mielina en el Sistema Nervioso Periférico (SNP).</li>
+
+<li><b>Célula ependimaria:</b> recubre los ventrículos cerebrales y participa en la producción y circulación del líquido cefalorraquídeo.</li>
+`;
+
+feedback += `</ul>`;
+
 score += correct;
+
 document.getElementById("score").textContent = score;
 
-showCertificate();
+game.innerHTML = `
+<h2>🎯 Resultado del Desafío Final</h2>
+
+<p>
+Obtuviste <b>${correct}/6</b> relaciones correctas.
+</p>
+
+${feedback}
+
+<br>
+
+<button onclick="showCertificate()">
+Finalizar Actividad
+</button>
+`;
+
 }
 
 function showCertificate(){
@@ -495,6 +534,10 @@ game.innerHTML = `
 <li><b>Clasificación funcional de neuronas:</b> sensitivas, motoras e interneuronas.</li>
 <li><b>Clasificación estructural:</b> unipolares, bipolares y multipolares.</li>
 </ul>
+
+<hr>
+
+<h2>¡Gracias Por Jugar!</h2>
 
 </div>
 `;
