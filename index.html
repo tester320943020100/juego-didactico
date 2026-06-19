@@ -127,63 +127,65 @@ const game = document.getElementById("game");
 
 const levels = [
 
-{
-question:"¿Cuál es la función principal de una neurona?",
-options:["Defender","Transmitir impulsos nerviosos","Producir mielina","Nutrir"],
-correct:1,
-info:"<p>La neurona recibe, procesa y transmite impulsos nerviosos.</p>"
-},
+    {
+        question:"¿Cuál es la función principal de una neurona?",
+        options:["Defender","Transmitir impulsos nerviosos","Producir mielina","Nutrir"],
+        correct:1,
+        info:"<p>La neurona recibe, procesa y transmite impulsos nerviosos.</p>"
+    },
 
-{
-question:"¿Qué parte recibe información de otras células?",
-options:["Axón","Dendritas","Núcleo","Mielina"],
-correct:1,
-info:"<p>Las dendritas reciben señales y las conducen hacia el soma.</p>"
-},
+    {
+        question:"¿Qué parte recibe información de otras células?",
+        options:["Axón","Dendritas","Núcleo","Mielina"],
+        correct:1,
+        info:"<p>Las dendritas reciben señales y las conducen hacia el soma.</p>"
+    },
 
-{
-question:"¿Qué estructura envía el impulso nervioso?",
-options:["Axón","Soma","Dendrita","Núcleo"],
-correct:0,
-info:"<p>El axón transmite el impulso hacia otras células.</p>"
-},
+    {
+        question:"¿Qué estructura envía el impulso nervioso?",
+        options:["Axón","Soma","Dendrita","Núcleo"],
+        correct:0,
+        info:"<p>El axón transmite el impulso hacia otras células.</p>"
+    },
 
-{
-question:"¿Qué célula brinda soporte y nutrición?",
-options:["Microglía","Astrocito","Schwann","Ependimaria"],
-correct:1,
-info:"<p>Los astrocitos brindan soporte y nutrición.</p>"
-},
+    {
+        question:"¿Qué célula brinda soporte y nutrición?",
+        options:["Microglía","Astrocito","Schwann","Ependimaria"],
+        correct:1,
+        info:"<p>Los astrocitos brindan soporte y nutrición.</p>"
+    },
 
-{
-question:"¿Qué célula produce mielina en el SNC?",
-options:["Schwann","Astrocito","Oligodendrocito","Microglía"],
-correct:2,
-info:"<p>El oligodendrocito produce mielina en el SNC.</p>"
-},
+    {
+        question:"¿Qué célula produce mielina en el SNC?",
+        options:["Schwann","Astrocito","Oligodendrocito","Microglía"],
+        correct:2,
+        info:"<p>El oligodendrocito produce mielina en el SNC.</p>"
+    },
 
-{
-question:"¿Qué célula produce mielina en el SNP?",
-options:["Schwann","Microglía","Astrocito","Ependimaria"],
-correct:0,
-info:"<p>La célula de Schwann produce mielina en el SNP.</p>"
-},
+    {
+        question:"¿Qué célula produce mielina en el SNP?",
+        options:["Schwann","Microglía","Astrocito","Ependimaria"],
+        correct:0,
+        info:"<p>La célula de Schwann produce mielina en el SNP.</p>"
+    },
 
-{
-question:"¿Cuál es la función principal de la microglía?",
-options:["Defensa inmunitaria","Nutrición","Mielina","Impulsos"],
-correct:0,
-info:"<p>La microglía actúa como defensa del sistema nervioso.</p>"
-},
+    {
+        question:"¿Cuál es la función principal de la microglía?",
+        options:["Defensa inmunitaria","Nutrición","Mielina","Impulsos"],
+        correct:0,
+        info:"<p>La microglía actúa como defensa del sistema nervioso.</p>"
+    },
 
-{
-question:"¿Qué células participan en el líquido cefalorraquídeo?",
-options:["Microglía","Schwann","Ependimarias","Astrocitos"],
-correct:2,
-info:"<p>Las células ependimarias participan en la circulación del líquido cefalorraquídeo.</p>"
-}
-
+    {
+        question:"¿Qué células participan en el líquido cefalorraquídeo?",
+        options:["Microglía","Schwann","Ependimarias","Astrocitos"],
+        correct:2,
+        info:"<p>Las células ependimarias participan en la circulación del líquido cefalorraquídeo.</p>"
+    }
 ];
+
+// Mezclar las preguntas aleatoriamente cada vez que se inicia el juego
+levels.sort(() => Math.random() - 0.5);
 
 function createProgressBar(){
 
@@ -214,14 +216,28 @@ function updateProgress(){
 
 function loadQuestion(){
 
+    updateProgress();
+
     let q = levels[level];
 
     game.innerHTML = `
-    <div class="question">${q.question}</div>
 
-    ${q.options.map((op,i)=>
-        `<button onclick="answer(${i})">${op}</button>`
-    ).join("")}
+        <div class="question">${q.question}</div>
+
+        <img src="${q.image}"
+             alt="Imagen de la célula"
+             style="
+                width:100%;
+                max-width:300px;
+                border-radius:15px;
+                margin:15px auto;
+                display:block;
+                box-shadow:0 0 10px rgba(0,0,0,.2);
+             ">
+
+        ${q.options.map((op,i)=>
+            `<button onclick="answer(${i})">${op}</button>`
+        ).join("")}
     `;
 }
 
